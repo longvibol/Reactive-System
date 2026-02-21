@@ -1,0 +1,399 @@
+1- Add Dependancy 
+
+<!-- Liquibase (JDBC at startup) -->
+	    
+	    <dependency>
+		  <groupId>org.springframework.boot</groupId>
+		  <artifactId>spring-boot-starter-liquibase</artifactId>
+		</dependency>
+
+
+2- create .ymal file 
+
+>> in the src/main/resources/
+
+create folder :db/changelog/db.changelog-master.yaml
+
+=====================
+
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-owners.yaml
+
+
+
+=====================
+
+
+3- connect from spring boot to liquietbase 
+
+# JDBC connection only for Liquibase
+  datasource:
+    url: jdbc:postgresql://localhost:5445/ownerservice
+    username: ownerservice
+    password: ownerservice
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml 
+
+
+==> full code :application.yaml 
+
+spring:
+  application:
+    name: ownerservice
+
+  # Reactive runtime connection
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5445/ownerservice
+    username: ownerservice
+    password: ownerservice
+
+  # JDBC connection only for Liquibase
+  datasource:
+    url: jdbc:postgresql://localhost:5445/ownerservice
+    username: ownerservice
+    password: ownerservice
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml 
+
+---------------------------------------------------
+
+4- Add configuration for liquitbase 
+
+- LiquibaseJdbcConfig.java 
+
+package com.piseth.java.school.ownerservice.config;
+import javax.sql.DataSource;
+
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.autoconfigure.DataSourceProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import com.zaxxer.hikari.HikariDataSource;
+
+@Configuration
+public class LiquibaseJdbcConfig {
+
+    @Bean
+    @ConfigurationProperties("spring.datasource")
+    DataSourceProperties ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct() {
+    	System.out.print("Liquibase DataSource bean created");
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    DataSource liquibaseDataSource(DataSourceProperties ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct) {
+        return ltc1qs49erv7pzeczp5qlnxd46aufzapsmzpa7y73ct
+                .initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
+                .build();
+    }
+}
+
+
+----------------------------------------------------------------
+
+
+5- Proper create table with liquitbase 
+
+>> create folder changes >> create : 001-create-owners.yaml
+
+-------------------------
+
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-owners
+      author: piseth
+      changes:
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKeyName: pk_owner
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(80)
+              - column:
+                  name: phone
+                  type: varchar(30)
+              - column:
+                  name: status
+                  type: varchar(30)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamptz
+                  constraints:
+                    nullable: false
+
+        - createIndex:
+            tableName: owners
+            indexName: ux_owners_email
+            unique: true
+            columns:
+              - column:
+                  name: email
+
+        - createIndex:
+            tableName: owners
+            indexName: ux_owners_phone
+            unique: true
+            columns:
+              - column:
+                  name: phone				  
+
+
+------------------------------------
+
+>> main db.changelog-master.yaml 
+
+
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-owners.yaml
+
+
+When we want to create new table we can add :
+
+- include:
+      file: db/changelog/changes/002-create-address.yaml
+
+==> then add it to the main .yaml 
+
+databaseChangeLog:
+  - include:
+      file: db/changelog/changes/001-create-owners.yaml
+
+  - include:
+      file: db/changelog/changes/002-create-address.yaml
+
+
+
+6- Running 
+
+>> mvn spring-boot:run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
