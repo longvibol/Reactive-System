@@ -6,7 +6,6 @@ import java.util.UUID;
 import com.piseth.java.school.ownerservice.domain.enums.OwnerStatus;
 
 import lombok.Builder;
-import lombok.Data;
 import lombok.Value;
 
 @Builder

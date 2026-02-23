@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class OwnerRegisterRequestNormalizer {
+	
+	// it ask like deliget
 
     private final EmailNormalizer emailNormalizer;
     private final PhoneNormalizer phoneNormalizer;

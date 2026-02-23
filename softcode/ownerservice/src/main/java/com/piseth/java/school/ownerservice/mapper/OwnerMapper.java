@@ -11,6 +11,7 @@ import lombok.Data;
 @Mapper(componentModel = "spring")
 public interface OwnerMapper {
 
+	// we are not mapping id , status, createat, updatee at
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
