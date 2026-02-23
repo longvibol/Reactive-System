@@ -1,0 +1,4 @@
+- dbeaver : connection to database 
+- GitHub destop : view our repository 
+
+

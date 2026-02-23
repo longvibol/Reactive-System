@@ -1,0 +1,181 @@
+1- Start from Create domain or Entity 
+
+- domain or field : owner 
+
+    @Id
+    private UUID id;          // keep null if DB generates it
+
+    private String email;
+
+    private String phone;
+
+    private OwnerStatus status;
+
+    private Instant createdAt; // created_at
+
+    private Instant updatedAt;
+
+- enums :
+
+public enum OwnerStatus {
+    PENDING,
+    ACTIVE,
+    SUSPENDED,
+    CLOSED
+}
+
+---------------------------------
+
+យើងត្រូវបង្កើតអោយដូចគ្នា រវាង Field នៅក្នុង domain របស់យើងអោយដូចទៅនឹង Liquipbase ដែលយើងបានបង្កើត
+
+
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-owners
+      author: piseth
+      changes:
+        - createTable:
+            tableName: owners
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  defaultValueComputed: gen_random_uuid()
+                  constraints:
+                    primaryKeyName: pk_owner
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+
+
+ចឹងពេលដែលវា Run វានឹងធ្វើការ Mapping ដោយខ្លួនឯងហើយ
+
+-----------------------------
+
+យើងអាចប្រើ JPA បង្កើត table អោយយើងបានតែវាមិនមែនជា Best Pratice ទេ
+
++ In Spring Boot (and Spring in general), the Builder Pattern is a design pattern used to create complex objects step-by-step. Instead of using a giant constructor with 10 different arguments—which is hard to read and prone to errors—you use a "Builder" to specify only the properties you need.
+
+
+==> solution we create table first then mapping field to the database 
+
+យើងប្រើ Repository : R2DBC  ដែលជា Reactive (save or retrive from database) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
