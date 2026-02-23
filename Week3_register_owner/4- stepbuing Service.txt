@@ -1,0 +1,400 @@
+1- build domain 
+
+2- create dto : យើងអត់ចឹងបង្ហាញវាទៅខាងក្រៅទេ ចឹងបានយើងត្រូវបង្កើត Object ដែលយើងចង់បង្ហាញអីទៅ
+
+- We want to put in the body in the Controller we use name : RegisterRequest 
+
+Ex: OwnerRegisterRequest (ពេលគេ ដាក់ចូលមក Request body យើង)
+
+3- Create servuce 
+
+ Mono<OwnerResponse> register(OwnerRegisterRequest request);
+
+- OwnerResponse - វាជា object ដែលយើងចឹងអោយគេឃើញពេល Register ហើយ
+- OwnerRegisterRequest​- សម្រាប់អោយ user register មកយើង
+
+----------------------------- OwnerResponse បង្ហាញទៅក្រៅវិញ
+
+public class OwnerResponse {
+
+    UUID id;
+    String email;
+    String phone;
+    OwnerStatus status;
+    Instant createdAt;
+    Instant updatedAt;
+}
+
+----------------------- OwnerRegisterRequest ពេលគេចុះ ឈ្មោះមានតែពីរ filed នឹងទេ email និង phone
+
+public class OwnerRegisterRequest {
+
+    @Email(message = "Invalid email format.")
+    @Size(max = 80, message = "Email must be <= 80 characters.")
+    private String email;
+
+    @Size(max = 30, message = "Phone must be <= 30 characters.")
+    private String phone;
+}
+
+----------------------- The owner doman អ្វីដែលយើងបង្កើតហើយរក្សាទុកក្នុង Database 
+
+public class Owner {
+
+    @Id
+    private UUID id;          // keep null if DB generates it
+
+    private String email;
+
+    private String phone;
+
+    private OwnerStatus status;
+
+    private Instant createdAt; // created_at
+
+    private Instant updatedAt;
+}
+
+-------------------------------------------
+
+explain the service imple: 
+
+    @Override
+    public Mono<OwnerResponse> register(OwnerRegisterRequest request) {
+    	log.info("Owner registration requested");
+
+        OwnerRegisterRequest normalized = normalizer.normalize(request);
+
+        Owner draft = ownerMapper.toOwnerDraft(normalized);
+        Owner pending = ownerFactory.newPendingOwner(draft);
+
+        return registrationValidator.validate(normalized)
+            .then(ownerRepository.save(pending))
+            //.doOnSuccess(saved -> log.info("Owner registered successfully. ownerId={}", saved.getId()))
+            .map(ownerMapper::toResponse);
+    }
+
+
+- OwnerRegisterRequest normalized = normalizer.normalize(request); ពេលដែលទទួលបាន emal and phone from the user register យើងយកវាទៅ កំណត់សិន we set the email and phone to normalize to our form 
+
+- OwnerRegisterRequest : have two filed : email and phone 
+
+-  Owner draft = ownerMapper.toOwnerDraft(normalized); យើងចង់បាន object Owner have status draft (មានន័យថាគេ User register មកយើងបន្លែងវាទៅជា Owner object របស់យើងសម្រាប់រក្សាទុកក្នុង Database 
+
+register -> normalized -> Owner object
+
+Note 
+
+in order to can easy mapping from Register to Own and to the respsone we create one class to do mapping :
+
+
+@Mapper(componentModel = "spring")
+public interface OwnerMapper {
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    Owner toOwnerDraft(OwnerRegisterRequest request);
+
+    OwnerResponse toResponse(Owner owner);
+
+}
+
+គេបោះ OwnerRegisterRequest មកយើងយកមក Mapping with our ownerDraf filed 
+
+- OwnerResponse toResponse(Owner owner); ពេលយើងចង់បាន​ទៅជា output អោយគេមើលវិញ
+
+- Owner pending = ownerFactory.newPendingOwner(draft); បន្ទាប់មកយើងដាក់ status អោយវាទៅជា pedding សិនមុននឹងគេអាចប្រើបាន
+
+
+------------------------------------------------------
+
+- create new object for pendding status : newPendingOwner.class
+
+    public Owner newPendingOwner(Owner draft) {
+
+        Instant now = Instant.now(clock);
+
+        return Owner.builder()
+            .id(draft.getId()) // usually null; DB generates the ID
+            .email(draft.getEmail())
+            .phone(draft.getPhone())
+            .status(OwnerStatus.PENDING) // enforce lifecycle rule
+            .createdAt(now)
+            .updatedAt(now)
+            .build();
+    }
+
+
+.status(OwnerStatus.PENDING) // enforce lifecycle rule ដែលយើងអោយវា បង្កើត User នឹងទៅជា Pendding សិន
+
+---------------------------------------------
+
+3.1 ដល់វគ្គយើងធ្វើការ Save to database 
+
+return registrationValidator.validate(normalized)
+            .then(ownerRepository.save(pending))
+            //.doOnSuccess(saved -> log.info("Owner registered successfully. ownerId={}", saved.getId()))
+            .map(ownerMapper::toResponse);
+
+- registrationValidator : it is our service to save to database 
+
+- private final OwnerRegistrationValidator registrationValidator;
+
+if come from this Class : OwnerRegistrationValidator (ជា Interface)
+
+- in order to save to database we extends from ReactiveCrudRepository<owner, UUID> យើងអោយ framework អ្នកធ្វើការនឹងអោយយើង ដែលយគ្រាន់តែដាក់ class ដែលយើងចង់បាន នឹងលេខ ID file name) 
+
+public interface OwnerRepository extends ReactiveCrudRepository<Owner, UUID> {
+
+    Mono<Boolean> existsByEmail(String email); // we find the existeing from db first 
+
+    Mono<Boolean> existsByPhone(String phone);
+}
+
+
+- មុននឹង Save we validate មុនសិន​៖  we create one class to do validate :
+
+1- validateRequiredContact : validate on the text email and phone input with : StringUtils.hasText វាស្របទៅតាមលក្ខណ័យើងចង់បានឬអត់
+
+2- checkEmailUnique យើងត្រូវទៅទាញចេញពី Database ចឹងហើយបានយើងត្រូវប្រើ service : ownerRepository មកជួយ
+
+3- checkPhoneUnique យើងត្រូវទៅទាញចេញពី Database ចឹងហើយបានយើងត្រូវប្រើ service : ownerRepository មកជួយ
+
+
+ 
+
+boolean hasEmail = StringUtils.hasText(request.getEmail());
+
+
+What StringUtils.hasText use for :
+
+- Not Null: The object exists in memory.
+
+- Not Empty: The length is greater than 0 ("").
+
+- Not Just Whitespace: It contains at least one non-whitespace character (it ignores spaces, tabs, and newlines).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

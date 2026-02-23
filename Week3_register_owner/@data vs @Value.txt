@@ -1,0 +1,78 @@
+1- @Data (The Mutable Bean) កែបាន
+
+@Data is the go-to for standard POJOs (Plain Old Java Objects) and DTOs where you need to change values after the object is created.
+
+- What it includes: @Getter, @Setter, @ToString, @EqualsAndHashCode, and @RequiredArgsConstructor.
+
+- Behavior: Fields are mutable (unless you manually mark them final). It creates a public constructor for final fields and provides setters for everything else.
+
+- Best Use Case: JPA Entities, request DTOs where Spring needs to populate fields via setters.
+
+
+2- @Value (The Immutable Value Object) មិនអាចកែបាន
+
+@Value is the "shorthand" for making a class completely immutable. 
+
+
+- What it includes: @Getter, @ToString, @EqualsAndHashCode, and @AllArgsConstructor.
+
+- Behavior: * It marks the class as final.
+
+- It marks all fields as private and final automatically.
+
+- It does not generate setters.
+
+- Best Use Case: Domain events, configuration properties, or any object where the data shouldn't change once it's born.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

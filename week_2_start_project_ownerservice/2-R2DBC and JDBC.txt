@@ -1,0 +1,18 @@
+1. R2DBC: The "Live" Connection
+R2DBC (Reactive Relational Database Connectivity) is designed for high-concurrency, non-blocking applications.
+
+Why it's there: Your Spring Boot application likely uses Spring WebFlux. To keep the entire request-response cycle non-blocking, the database driver must also be non-blocking.
+
+The Benefit: It allows your app to handle thousands of concurrent connections with very few threads, as it doesn't "wait" (block) for the database to return data.
+
+2. JDBC: The "Setup" Connection (Liquibase)
+JDBC is the traditional, blocking way Java talks to databases.
+
+Why it's there: You are using Liquibase for database migrations (creating tables, adding columns). Liquibase is an older, mature library built entirely on standard JDBC.
+
+The Conflict: As of now, Liquibase (and its competitor Flyway) does not natively support R2DBC. They require a standard datasource (JDBC) to connect to the database, execute the migration scripts, and then close the connection.
+
+
+- JDBC is for setup the schema in the database 
+- R2DBC for Reactive System 
+
