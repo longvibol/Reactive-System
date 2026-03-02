@@ -1,0 +1,242 @@
+- private final OwnerFactory ownerFactory; យើងបង្កើត ownerFactory ដើម្បីធ្វើការ  Handdle the status of the ownwer 
+
+
+public enum OwnerStatus {
+    PENDING,
+    ACTIVE,
+    SUSPENDED,
+    CLOSED
+}
+
+ចឹងយើងអាចធ្វើការផ្លាស់ប្តូវ status វាទៅ status ថ្មីដោយបង្កើត Object new តែមួយដោយមិនធ្វើការផ្តូវ filed វាទេ គេធ្វើចឹងស្រួលគ្រប់គ្រង 
+
+Ex: 
+
+public Owner newPendingOwner(Owner draft) {
+
+        Instant now = Instant.now(clock);
+
+        return Owner.builder()
+            .id(draft.getId()) // usually null; DB generates the ID
+            .email(draft.getEmail())
+            .phone(draft.getPhone())
+            .status(OwnerStatus.PENDING) // enforce lifecycle rule
+            .createdAt(now)
+            .updatedAt(now)
+            .build();
+    }
+
+- Instant now = Instant.now(clock); ម្តេចបានយើងប្រើ Instant.now ជាមួយ Clock ដោយសារតែបើយើងប្រើ Instant.now() : វាអាស្រ័យទៅនឹង system របស់យើង 
+
+- យើង Inject : private final Clock clock; យើងអាចធ្វើការកែប្រែ Time for our testing 
+
+ដើម្បីអាចប្រើបានគេប្រើ Injection style 
+
+- Avoid Mutating Input Object ដើម្បី ជៀសវាង side effect ទៅ អ្វីផ្សេង. Ex object have change from pending to active but something it will side effeec to other object if we use setting to other object 
+
+
+ /*
+     * Clock is injected instead of using Instant.now() directly.
+     *
+     * WHY?
+     * - Improves testability.
+     * - In unit tests, we can inject Clock.fixed(...) to control time.
+     * - Avoids hidden dependency on system time.
+     *
+     * This is a senior-level best practice.
+     */
+
+
+
+នេះយើងបង្កើត Bean ដើម្បីយកវាមកប្រើ​
+
+@Configuration
+public class TimeConfig {
+
+    @Bean
+    Clock clock() {
+        return Clock.systemUTC();
+    }
+    
+//    @Bean
+//    Clock clock() {
+//        return Clock.fixed(
+//            Instant.parse("2026-01-01T00:00:00Z"),
+//            ZoneOffset.UTC
+//        );
+//    }
+}
+
+ចឹងយើងអាចបង្កើត Time ពេលយើង testing បាន​
+
+- return Clock.systemUTC(); Real time from the system 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,334 @@
+- ម្តេចបានពេលខ្លះប្រើ  Return type Mono 
+- ម្តេចពេលខ្លះ Return type is voice 
+
+/**
+     * Entry point for validation.
+     *
+     * IMPORTANT POINT:
+     * - We execute synchronous validation first (CPU logic).
+     * - Then we execute asynchronous validation (DB check).
+     *
+     * Why return Mono<Void>?
+     * In reactive programming, validation does not return true/false.
+     * Instead:
+     *   - Success  = complete signal
+     *   - Failure  = error signal
+     *
+     * Mono<Void> means:
+     *   "I only care whether it completes or errors."
+     */
+    public Mono<Void> validate(OwnerRegisterRequest request) {
+        validateRequiredContact(request);   // pure synchronous check
+        return validateUniqueness(request); // reactive DB validation
+    }
+
+
+- public Mono<Void> validate(OwnerRegisterRequest request) យើងដាក់វាជា Public ចឹងវាជា Entry point របស់យើង 
+
+- inside : validateRequiredContact this return type is Voice : private void validateRequiredContact(OwnerRegisterRequest request)
+
+- validate : private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
+        return checkEmailUnique(request.getEmail())
+            .then(checkPhoneUnique(request.getPhone()));
+    }
+
+==> the is the Mono Return 
+
+ម្តេចបាន មិន Return type String or something else why it is Voice 
+
+-------------------------------------------------------------------------
++ Synchronous មានន័យថាតាមលំដាប់លំដោយ ពីលើចុះក្រោម
++ asynchronous វាធ្វើលក្ខណៈ Parallel ពេលជាមួយគ្នា 
+
+- We execute synchronous validation first (CPU logic).
+
+
+In reactive programming, validation does not return true/false.
+
+ចឹងអោយជំនួយដោយ return true/false វាអោយជា Single វិញថា 
+
+Instead:
+     *   - Success  = complete signal អត់មានបញ្ហា Error អ្វីទេ
+     *   - Failure  = error signal : បើវាមិនត្រូវលក្ខណ វាបោះ exception ចេញមក​
+
+- ហេតុអ្វី Mono<Void> ម្តេចមិនចេញ ជា String អីទៅ ដោយសារតែយើងមិនចង់ប្រើអា Return Type នឹងមកទេ យើងគ្រាន់តែចង់ដឹង completed or error 
+
+---------------------------------
+
+
++ unexpected behavior មិនដូចអ្វីដែលយើងធ្វើការរំពឹងទុក 
+
+- Thread ពីរក្នុងពេលតែមួយ ឬ two request ក្នុងពេលតែមួយ 
+
+ឧ. អាចក្នុងពេលតែមួយមានគេ Register មកទិន្នន័យ email ដូចគ្នា​ចឹងពេល នឹងធ្វើអោយផ្នែក Database យើងមានទិន្នន័យស្ទួន ដូចគ្នា 
+
+ចឹងយើងត្រូវធ្វើការ We must also : ផ្នែក Database ត្រូវធ្វើការ insert ម្តង់មួយ ជាកន្លែងដែលធ្វើការ Validation ចុងក្រោយ
+
+- Add UNIQUE constraint in database ( repository layer) 
+
+- Handle DataIntegrityViolationException (controller level : Api level ពេលដែលមានករណីនឹងកើតឡើងវា នឹងចេញ error 500) តែយើងអត់ដឹងថាវា មកពីបញ្ហាអ្វីទេ យើងត្រូវធ្វើការកែ អោយទៅជា 400 មានន័យថា INTER data to db not success 
+
+* Validator = Early feedback
+* Database constraint = Real protection
+
+
+* SOLID Principle:
+     * - Single Responsibility:
+     *   This class only validates business rules.
+     *
+     * - Repository handles persistence.
+     * - Service orchestrates flow. 
+
+orchestrates អ្នកដៅគោលដៅថាពេលណាអោយវា ធ្វើការអី ==> this is our service 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
