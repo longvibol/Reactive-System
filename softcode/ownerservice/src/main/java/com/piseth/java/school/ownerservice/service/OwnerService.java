@@ -10,6 +10,7 @@ import reactor.core.publisher.Mono;
 public interface OwnerService {
 
     Mono<OwnerResponse> register(OwnerRegisterRequest request);
+    
     Mono<OwnerResponse> getById(UUID ownerId);
 
 }

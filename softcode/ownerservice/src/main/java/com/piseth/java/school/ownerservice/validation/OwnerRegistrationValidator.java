@@ -7,10 +7,12 @@ import com.piseth.java.school.ownerservice.exception.BadRequestException;
 import com.piseth.java.school.ownerservice.repository.OwnerRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class OwnerRegistrationValidator {
 
     private final OwnerRepository ownerRepository;
@@ -67,8 +69,11 @@ public class OwnerRegistrationValidator {
      * If email fails, phone check will NOT execute.
      */
     private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
+    	log.info("Validate Email");
         return checkEmailUnique(request.getEmail())
-            .then(checkPhoneUnique(request.getPhone()));
+        		
+        	// after check email if it not working it will not working to the phone. waiting have someone subribe to the phone
+            .then(Mono.defer(()-> checkPhoneUnique(request.getPhone())));
     }
 
     /**
@@ -105,6 +110,7 @@ public class OwnerRegistrationValidator {
      * This pattern is reusable for any uniqueness validation.
      */
     private Mono<Void> checkPhoneUnique(String phone) {
+    	log.info("Validate Phone");
         if (!StringUtils.hasText(phone)) {
             return Mono.empty();
         }

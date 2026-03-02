@@ -1,0 +1,149 @@
+Why use Mono 
+
+- អោយតែទាក់ទងនឹង DB called, Http called or file io, or file access សុទ្ធតែលក្ខណៈ blocking 
+- បើវាអត់ទាក់ទងខាងលើ ទេគឺយើងប្រើ ចឹងវាជាលក្ខណ CPU logic ទាំងអស់ // pure synchronous check 
+
+Ex:  private void validateRequiredContact(OwnerRegisterRequest request)
+
+ * Pure synchronous validation.
+     *
+     * NOTE:
+     * - No database.
+     * - No async.
+     * - Therefore no Mono needed.
+     *
+
+ត្រូវចាំច្បាប់ ក្នុង Java 
+
+     * Rule:
+     * Use normal Java (void) when logic is CPU-only.
+
+
+Ex:
+
+private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
+        return checkEmailUnique(request.getEmail())
+            .then(checkPhoneUnique(request.getPhone()));
+    }
+
+
+ដើម្បី Chin តគ្នាបានដើម្បីអោយយើងនៅក្នុង pipeline ជាមួយគ្នា​ ==> 
+
+
+- this method check the DB that why we use Mono in this function we use .then ដោយសារតែ វា Return voice ដូចគ្នា តែបើវា Return អ្វីផ្សេងវិញ​ដូចជា Mono<String> or Mono<Bollen> ចឹងវាត្រូវ ប្រើ .Map .flatmap អ្វីវិញ
+
+Ex: 
+
+private Mono<Void> checkEmailUnique(String email) {
+        if (!StringUtils.hasText(email)) {
+            return Mono.empty(); // nothing to validate
+        }
+
+        return ownerRepository.existsByEmail(email)
+            .filter(Boolean::booleanValue)
+            .flatMap(exists ->
+                Mono.error(new BadRequestException("Email already registered."))
+            )
+            .then(); // convert Mono<Boolean> to Mono<Void>
+    }
+
+
+- this above function is return Mono<void> in the check .existsByEmail it return Boolean but we need void so we use ".then()" 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
