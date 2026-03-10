@@ -1,0 +1,161 @@
+Homework2: Validation : យើងបង្កើតថ្មីមួយទៀត បើវាមានរួចហើយយើងកុំអោយវាដាក់ចូលបាន
+
+@ExceptionHandler(DataIntegrityViolationException.class)
+    public Mono<ProblemDetail> handleConflict(DataIntegrityViolationException ex, ServerWebExchange exchange) {
+        log.warn("Data integrity violation. path={}", exchange.getRequest().getPath(), ex);
+
+        return Mono.just(problem(exchange, HttpStatus.CONFLICT,
+            "Conflict", "Duplicate or invalid data.", "/errors/conflict"));
+    }
+
+ក្នុងករណីដែលវាមិនត្រូវទៅនឹងអ្វីដែលយើងចាប់យើងប្រើ Generic ដើម្បីធ្វើការចាប់វា
+
+@ExceptionHandler(Exception.class)
+    public Mono<ProblemDetail> handleGeneric(Exception ex, ServerWebExchange exchange) {
+        // IMPORTANT: log the stacktrace
+        log.error("Unhandled exception. path={}", exchange.getRequest().getPath(), ex);
+
+        return Mono.just(problem(exchange, HttpStatus.INTERNAL_SERVER_ERROR,
+            "Internal error", "Unexpected error occurred.", "/errors/internal-error"));
+    }
+
+Noted: 
+
+
+Changing the order of those @ExceptionHandler methods is usually not the issue.
+
+
+In Spring, handler selection is based primarily on the exception type, not the method order inside the same @RestControllerAdvice.
+
+So in your class:
+
+handleBadRequest(BadRequestException.class) handles BadRequestException
+
+handleConflict(DataIntegrityViolationException.class) handles DataIntegrityViolationException
+
+handleValidation(WebExchangeBindException.class) handles WebExchangeBindException
+
+handleGeneric(Exception.class) is the fallback for everything else
+
+That means Exception.class will not steal the others just because it appears earlier or later. Spring will choose the more specific match.
+
+Recommended arrangement
+
+Even though order usually does not control matching, the clean arrangement is:
+
+1- most specific exceptions
+
+2- framework/business exceptions
+
+3-generic fallback last
+
+
+---------------------------------------------------------------------------------
+
+យើងត្រូវធ្វើការចាប់ដែលនោះគឺ WebExchangeBindException ពេលគេបញ្ចូលមកវាខុស Validation ពីរ filed របស់យើង
+
+
+Ex: vibollonggmail.com (គេបញ្ចូលមកខ្វះ @ហើយយើងបានដាក់ហើយនៅក្នុង OwnerRegisterRequestរបស់យើង ចឹងយើងត្រូវ validate វាមួយដែល
+
+ 
+
+@Data
+public class OwnerRegisterRequest {
+
+    @Email(message = "Invalid email format.")
+    @Size(max = 80, message = "Email must be <= 80 characters.")
+    private String email;
+
+    @Size(max = 30, message = "Phone must be <= 30 characters.")
+    private String phone;
+}
+
+==> we use 
+
+@ExceptionHandler(WebExchangeBindException.class)
+    public Mono<ProblemDetail> handleValidation(WebExchangeBindException ex, ServerWebExchange exchange) {
+        log.warn("Validation error. path={}", exchange.getRequest().getPath(), ex);
+
+        String message = "Validation failed.";
+        if (!ex.getAllErrors().isEmpty() && ex.getAllErrors().get(0).getDefaultMessage() != null) {
+            message = ex.getAllErrors().get(0).getDefaultMessage();
+        }
+
+        return Mono.just(problem(exchange, HttpStatus.BAD_REQUEST, "Validation error", message, "/errors/validation-error"));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
