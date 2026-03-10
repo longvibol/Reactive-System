@@ -16,10 +16,14 @@ public class OwnerRegisterRequestNormalizer {
 
     public OwnerRegisterRequest normalize(OwnerRegisterRequest request) {
 
-        request.setEmail(emailNormalizer.normalize(request.getEmail()));
-        request.setPhone(phoneNormalizer.normalize(request.getPhone()));
+    	// create new object prevend side effected if we take the object then we do normalize
+    	
+    	OwnerRegisterRequest newRequest = new OwnerRegisterRequest();
+    	
+    	newRequest.setEmail(emailNormalizer.normalize(request.getEmail()));
+    	newRequest.setPhone(phoneNormalizer.normalize(request.getPhone()));
 
-        return request;
+        return newRequest;
     }
     
     //@TODO don't mutate parameter (create new object)
