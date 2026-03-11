@@ -1,0 +1,54 @@
+In the Servecie គេមិនអោយកែទេ close modification តែយើងអាចយកវាមកធ្វើលក្ខណបាន can extend 
+==> in solid principle : Open/Closed Principle
+
+** Strategy pattern **
+
+=> Same job, different ways to do it 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
