@@ -1,0 +1,223 @@
+យើងចង់តេស្ត បើវាមាន Null តើវាអាចធ្វើការ handle បានឬអត់ 
+
+@Component
+public class EmailNormalizer {
+
+    public String normalize(String email) {
+        if (!StringUtils.hasText(email)) {
+            return null;
+        }
+
+        return email.trim().toLowerCase();
+    }
+}
+
+-----------------------------------------
+
+- if (!StringUtils.hasText(email)) = inside the StringUtils it already have :
+
+public abstract class StringUtils {
+
+	private static final String[] EMPTY_STRING_ARRAY = {};
+
+	private static final String FOLDER_SEPARATOR = "/";
+
+	private static final char FOLDER_SEPARATOR_CHAR = '/';
+
+	private static final String WINDOWS_FOLDER_SEPARATOR = "\\";
+
+	private static final char WINDOWS_FOLDER_SEPARATOR_CHAR = '\\';
+
+	private static final String DOUBLE_BACKSLASHES = "\\\\";
+
+	private static final String TOP_PATH = "..";
+
+	private static final String CURRENT_PATH = ".";
+
+	private static final char DOT_CHAR = '.';
+
+	private static final int DEFAULT_TRUNCATION_THRESHOLD = 100;
+
+	private static final String TRUNCATION_SUFFIX = " (truncated)...";
+
+
+-------------------------------------------------------------------------------------------
+
+ចឹងបានពេលដែលយើង តេស្តយើងអាចធ្វើការ កំណត់ emplty string បាន
+
+Tip : ដើម្បីធ្វើការ Group class test របស់យើង We can use Nested:
+
+
+@Nested
+    class ValidateUniqueness {
+    	@Test
+        void shouldComplete_whenEmailAndPhoneAreUnique() {
+            // When
+            OwnerRegisterRequest request = req("test@example.com", "012 345");
+
+            when(ownerRepository.existsByEmail("test@example.com")).thenReturn(Mono.just(false));
+            when(ownerRepository.existsByPhone("012 345")).thenReturn(Mono.just(false));
+
+            // When + Then
+            StepVerifier.create(ownerRegistrationValidator.validate(request))
+                .verifyComplete();
+
+            // Verify order: email check first, then phone check
+            InOrder inOrder = inOrder(ownerRepository);
+            inOrder.verify(ownerRepository).existsByEmail("test@example.com");
+            inOrder.verify(ownerRepository).existsByPhone("012 345");
+            //verify(ownerRepository).existsByEmail("test@example.com");
+            //verify(ownerRepository).existsByPhone("012 345");
+            verifyNoMoreInteractions(ownerRepository);
+        }
+    }
+
+
+==> import from : import org.junit.jupiter.api.Nested;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

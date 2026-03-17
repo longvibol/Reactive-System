@@ -1,0 +1,83 @@
+void shouldReturnNewInstance_andNotMutateInput() {
+
+- Test Value :
+
+// Assert: input remains unchanged
+        assertEquals("  TEST@Example.Com  ", input.getEmail());
+        assertEquals(" 012 345 ", input.getPhone());
+
+}
+
+យើងធ្វើការតេស្ត លើ input it is No MutateInput (មានន័យថា យើងដាក់ម្តេចចេញចឹងមិនបានកែប្រែទេ)
+
+
+- Testing when I called to another server (interactions) ពេលវាមានទំនក់ទំនង់ជាមួយ service ដទៃ
+- test behavior :
+
+
+        // Verify interactions
+        verify(emailNormalizer).normalize("  TEST@Example.Com  ");
+        verify(phoneNormalizer).normalize(" 012 345 ");
+        verifyNoMoreInteractions(emailNormalizer, phoneNormalizer);
+
+ចង់ដឹងថាពេលដែលវា ធ្វើការ ចប់ហើយវាអត់ទៅធ្វើការ called service អីផ្សេងទៀតទេ side effect 
+
+វាអត់ទៅប៉ះពាល់ដល់ Service ផ្សេងទេ
+
+---------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
