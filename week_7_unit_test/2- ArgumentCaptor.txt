@@ -1,0 +1,13 @@
+ArgumentCaptor<Owner> ownerCaptor = ArgumentCaptor.forClass(Owner.class);
+
+ពេលដែលយើងចង់ដឹងថាខាងក្នុង Method នឹងវាមានអ្វីខ្លះ
+
+public Mono<OwnerResponse> register(OwnerRegisterRequest request) {}
+
+100/ per days 
+
+
+
+
+
+

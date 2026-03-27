@@ -1,0 +1,125 @@
+@Test
+         void shouldError_whenEmailAlreadyRegistered_andShouldNotCheckPhone() {
+             // Given
+             OwnerRegisterRequest request = req("dup@example.com", "012 345");
+
+             // When
+             when(ownerRepository.existsByEmail("dup@example.com")).thenReturn(Mono.just(true));
+
+             // Then
+             StepVerifier.create(ownerRegistrationValidator.validate(request))
+                 .expectErrorSatisfies(ex -> {
+                     assertTrue(ex instanceof BadRequestException);
+                     assertEquals("Email already registered.", ex.getMessage());
+                 })
+                 .verify();
+
+             // Critical rule: phone check must NOT run if email fails
+             verify(ownerRepository).existsByEmail("dup@example.com");
+             verify(ownerRepository, never()).existsByPhone(any());
+             //verifyNoMoreInteractions(ownerRepository);
+         }
+
+យើងចឹងតេស្ត ពេលដែលមាន email register ហើយ ហើយយើងធ្វើការ​ Register ម្តង់ទៀត គឺវាមិនបានធ្វើការ Register into Database នោះទេ
+ហើយ function in the method phone not invoke 
+
+1- when(ownerRepository.existsByEmail("dup@example.com")).thenReturn(Mono.just(true)); វា return true ដោយសារតែ function យើងសរសេរមកចឹង 
+បើវា True មានន័យថាវា បានធ្វើការ check to the database 
+
+
+2- StepVerifier.create(ownerRegistrationValidator.validate(request))
+                 .expectErrorSatisfies(ex -> {
+                     assertTrue(ex instanceof BadRequestException);
+                     assertEquals("Email already registered.", ex.getMessage());
+                 })
+                 .verify();
+ធ្វើការតេស្តពេលដែលវា មាន error កើតឡើង ពេលដែលមាន Register email already 
+
+3-     // Critical rule: phone check must NOT run if email fails
+             verify(ownerRepository).existsByEmail("dup@example.com");
+             verify(ownerRepository, never()).existsByPhone(any());
+
+==> verify(ownerRepository, never()).existsByPhone(any()); ពេលដែល error កើតឡើងគឺវាមិនបានធ្វើការ ហៅ Function នឹងទេ verify(ownerRepository, never())
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
