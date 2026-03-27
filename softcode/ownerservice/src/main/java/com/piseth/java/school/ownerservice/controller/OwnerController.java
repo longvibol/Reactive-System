@@ -13,29 +13,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.dto.OwnerResponse;
-import com.piseth.java.school.ownerservice.service.impl.OwnerServiceImpl;
+import com.piseth.java.school.ownerservice.service.OwnerService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/api/v1/owners")
 @RequiredArgsConstructor
+@RequestMapping("/api/v1/owners")
 public class OwnerController {
-	
-	private final OwnerServiceImpl owerService;
-	
-	
-	@ResponseStatus(HttpStatus.CREATED)
-	@PostMapping
-	public Mono<OwnerResponse> ownerRegister(@RequestBody @Valid OwnerRegisterRequest request) {
-		return owerService.register(request);
-	}
-	
-	@GetMapping("/{ownerId}")
-	public Mono<OwnerResponse> getOwnerById(@PathVariable UUID ownerId) {
-	    return owerService.getById(ownerId);
-	}
+
+    private final OwnerService ownerService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<OwnerResponse> register(@Valid @RequestBody OwnerRegisterRequest request) {
+        return ownerService.register(request);
+    }
+    
+    @GetMapping("/{ownerId}")
+    public Mono<OwnerResponse> getById(@PathVariable UUID ownerId) {
+        return ownerService.getById(ownerId);
+    }
 
 }

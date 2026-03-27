@@ -17,16 +17,18 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+	@ExceptionHandler(OwnerNotFoundException.class)
+    public Mono<ProblemDetail> handleNotFound(OwnerNotFoundException ex, ServerWebExchange exchange) {
+        log.warn("Owner not found. path={}", exchange.getRequest().getPath(), ex);
+        return Mono.just(problem(exchange, HttpStatus.NOT_FOUND, "Owner not found", ex.getMessage(), "/errors/owner-not-found"));
+    }
     
     @ExceptionHandler(BadRequestException.class)
     public Mono<ProblemDetail> handleBadRequest(BadRequestException ex, ServerWebExchange exchange) {
         log.warn("Bad request. path={}", exchange.getRequest().getPath(), ex);
         return Mono.just(problem(exchange, HttpStatus.BAD_REQUEST, "Bad request", ex.getMessage(), "/errors/bad-request"));
     }
-    
-    
-    
-    
     
     @ExceptionHandler(DataIntegrityViolationException.class)
     public Mono<ProblemDetail> handleConflict(DataIntegrityViolationException ex, ServerWebExchange exchange) {
@@ -35,8 +37,6 @@ public class GlobalExceptionHandler {
         return Mono.just(problem(exchange, HttpStatus.CONFLICT,
             "Conflict", "Duplicate or invalid data.", "/errors/conflict"));
     }
-    
-   
 
     @ExceptionHandler(WebExchangeBindException.class)
     public Mono<ProblemDetail> handleValidation(WebExchangeBindException ex, ServerWebExchange exchange) {
@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
     }
     
 
-    
     @ExceptionHandler(Exception.class)
     public Mono<ProblemDetail> handleGeneric(Exception ex, ServerWebExchange exchange) {
         // IMPORTANT: log the stacktrace
@@ -60,7 +59,7 @@ public class GlobalExceptionHandler {
         return Mono.just(problem(exchange, HttpStatus.INTERNAL_SERVER_ERROR,
             "Internal error", "Unexpected error occurred.", "/errors/internal-error"));
     }
-      
+    
 
     private ProblemDetail problem(ServerWebExchange exchange, HttpStatus status, String title, String detail, String typePath) {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(status, detail);
