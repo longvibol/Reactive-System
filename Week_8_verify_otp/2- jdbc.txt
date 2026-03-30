@@ -1,0 +1,34 @@
+// interface - Contract 
+// concrete class - implementation specific  
+
+
+1- in the database find to compare 
+
+public interface VerificationRepository extends ReactiveCrudRepository<Verification, UUID> {
+
+	//Method query 
+	Mono<Verification> findFirstByOwnerIdAndTypeAndVerifiedFalseOrderByCreatedAtDesc(UUID ownerId,
+			VerificationType type);
+
+	Flux<Verification> findByOwnerIdAndTypeAndVerifiedFalse(UUID ownerId, VerificationType type);
+}
+
+
+- findFirstByOwnerIdAndTypeAndVerifiedFalseOrderByCreatedAtDesc :  រកចេញពី ownerId និង Type និង verified វាមិនពិត ដើម្បីធ្វើការ Sort តាមអ្នកនាគេចេញមុន Desc(យក់អាណាគេក្រោយគេបំ
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

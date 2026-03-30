@@ -14,12 +14,14 @@ import lombok.Value;
 @Getter
 public class OwnerResponse {
 
-    UUID id;
-    String email;
-    String phone;
-    OwnerStatus status;
-    Instant createdAt;
-    Instant updatedAt;
+	UUID id;
+	String email;
+	String phone;
+	OwnerStatus status;
+	Instant emailVerifiedAt;
+	Instant phoneVerifiedAt;
+	Instant createdAt;
+	Instant updatedAt;
 }
 
 // Builder Pattern

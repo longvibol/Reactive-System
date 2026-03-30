@@ -1,0 +1,66 @@
+This class use for properties in the Otp :
+
+--------------------------
+
+package com.piseth.java.school.ownerservice.config;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@ConfigurationProperties(prefix = "app.verification")
+public class VerificationProperties {
+
+    private int otpLength = 6;
+    private long otpTtlSeconds = 300; // 5 min expire 
+    private int maxAttempts = 5;
+    private String otpPepper = "CHANGE-ME-IN-PROD";
+}
+
+-------------------------
+
+ដើម្បីអោយពេលបើកមកវាមានតម្លៃដាក់ចូលទៅក្នុង field នឹងយើងអាចធ្វើការដាក់តាម application.property បាន 
+
+app:
+  verification:
+    otp-length: 6​​
+    otp-ttl-seconds: 300
+    max-attempts: 5
+    otp-pepper: CHANGE-ME-IN-PROD 
+
+
+-----------------------------------------------------------
+
+អ្វីដែលវាចាប់ពី Class នោះដោយសារតែយើងដាក់ចូល Annotation 
+
+@ConfigurationProperties(prefix = "app.verification") នៅក្នុង class របស់យើង
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
