@@ -1,0 +1,107 @@
+*Verify Contact:
+
+- verify email 
+- verify phone
+
+--------
+
+1- Create 2 more columns:
+-email_verify_at
+-phone_verify_at
+
+------------
+
+2- Add 2 field in the domain owners:
+2-1: add field:
+
+    private Instant emailVerifiedAt;
+
+    private Instant phoneVerifiedAt;
+
+2-2: Add 2 columns in owner table (Liquibase) 
+
+databaseChangeLog:
+  - changeSet:
+      id: 002-add-owner-verification-columns
+      author: piseth
+      changes:
+        - addColumn:
+            tableName: owners
+            columns:
+              - column:
+                  name: email_verified_at
+                  type: timestamp
+              - column:
+                  name: phone_verified_at
+                  type: timestamp
+
+
+3- Send opt:
+
+- send to email , phone 
+
+4- Generate OTP:
+
+- Random 6 digit(123456)
+- ដើម្បីធ្វើការផ្ទាង់ផ្ទាត់យើងត្រូវធ្វើការ រក្សាវាទុកក្នុង Database សិន
+- យើងធ្វើការរក្សាទុកជា Hash code ==> ដូចនេះត្រូវធ្វើការបំលែងវាសិន 
+Ex:
+
+- number1 ==> hash (level 1)
+
+ដាក់តែប៉ុនឹងគេអាចធ្វើការបំបែកកូដយើងបានព្រោះគេអាចទាយដឹងថាវាជា base 256 or stm 
+ចឹងគេធ្វើការបន្ថែម កូដដោយខ្លួនឯង (យើង add custom text )
+- number1 + salt 1 = hash1 (បូកអំបិល)
+- number1 + salt 2 = hash2 (level 2)
+
+តែបើគេ hack ចូលដល់ database យើងគេអាចធ្វើការមើល កូដយើងបានដដែ ចឹងគេត្រូវដាក់ កូនបន្ថែមទៀត នៅក្នង environment របស់ហើយ
+Ex: our custom code : Peter : store in .env
+
+
+5- create table verification( ownerId, channel_type, encrypedOTP, salt, expirationTime, attemptCount, maxAttempt)
+
+6- Verify otp:
+
+7- Send OTP: in the demo we use console 
+-output in console 
+-send to email 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
