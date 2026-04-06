@@ -1,0 +1,17 @@
+Blcoking : Block main thread យើងមិនអាចធ្វើអីត ទៀតទេ បើវាកំពុងជាប់រវល់ជាមួយ main thread 
+វាត្រូវធ្វើការរង់ចាំសិន
+
+When : 
+
+1-Http request 
+2-File called 
+3-database called 
+4-email called 
+
+អោយតាទាក់ទងនឹងខាងលើនឹងយើងធ្វើការជាមួយ Publicer វិញ Mono or Flux 
+
+យើងអាចអោយ Elastisc thread working ធ្វើការជំនួយ main thread sinh ban 
+
+
+20093049Money@
+

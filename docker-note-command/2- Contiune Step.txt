@@ -1,0 +1,88 @@
+Send OTP
+Using Console log
+
+------------
+
+(Custom query)
+Verify OTP (attempt Count)
+Test resend OTP
+Cooldown resend អោយគេសំរាក់ ធ្វើការ Request មួយរយៈសិន កុំអោយគេធ្វើច្រើនពេកវា Slow down our system 
+==> cooldown period 
+Send to mail 
+
+------------
+
+Next Step Improve on verification status 
+
+
+------------------------------------------
+
+resume error : មានន័យថា បើវាមានបញ្ហាអោយវានៅតែបន្តទៅមុខទៀត
+
+
+------------------------------------------
+
+1 - Request sending OTP when it is expire time 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
