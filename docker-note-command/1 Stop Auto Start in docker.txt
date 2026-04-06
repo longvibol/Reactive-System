@@ -1,0 +1,1 @@
+>> for /f %i in ('docker ps -aq') do docker update --restart=no %i
