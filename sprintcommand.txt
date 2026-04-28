@@ -3,4 +3,8 @@ Clean skip test
 >> mvn clean package -DskipTests
 
 
-outc slcc smmr ypjd
+----
+
+Run 
+
+>> mvn spring-boot:run

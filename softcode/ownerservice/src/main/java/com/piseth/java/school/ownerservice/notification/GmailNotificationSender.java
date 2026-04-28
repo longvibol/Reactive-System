@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-@Primary
+//@Primary
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -34,7 +34,7 @@ public class GmailNotificationSender implements NotificationSender {
 
                 mailSender.send(message);
             })
-            .subscribeOn(Schedulers.boundedElastic()) // we make the main thread no blocking 
+            .subscribeOn(Schedulers.boundedElastic())
             .doOnSuccess(unused -> log.info("OTP email sent successfully. target={}", target))
             .doOnError(error -> log.error("Failed to send OTP email. target={}", target, error))
             .then();

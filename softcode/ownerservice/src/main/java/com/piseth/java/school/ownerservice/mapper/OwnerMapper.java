@@ -6,12 +6,9 @@ import com.piseth.java.school.ownerservice.domain.Owner;
 import com.piseth.java.school.ownerservice.dto.OwnerRegisterRequest;
 import com.piseth.java.school.ownerservice.dto.OwnerResponse;
 
-import lombok.Data;
-
 @Mapper(componentModel = "spring")
 public interface OwnerMapper {
 
-	// we are not mapping id , status, createat, updatee at
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
@@ -21,5 +18,3 @@ public interface OwnerMapper {
     OwnerResponse toResponse(Owner owner);
 
 }
-
-// Mapstruct

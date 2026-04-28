@@ -58,6 +58,8 @@ public class OwnerRegistrationValidator {
         }
     }
 
+    // Java Reactive:  Project Reactor
+    
     /**
      * Reactive uniqueness validation.
      *
@@ -69,11 +71,8 @@ public class OwnerRegistrationValidator {
      * If email fails, phone check will NOT execute.
      */
     private Mono<Void> validateUniqueness(OwnerRegisterRequest request) {
-    	log.info("Validate Email");
         return checkEmailUnique(request.getEmail())
-        		
-        	// after check email if it not working it will not working to the phone. waiting have someone subribe to the phone
-            .then(Mono.defer(()-> checkPhoneUnique(request.getPhone())));
+            .then(Mono.defer(() -> checkPhoneUnique(request.getPhone())));
     }
 
     /**
@@ -91,9 +90,12 @@ public class OwnerRegistrationValidator {
      * and converts the stream into Mono<Void>.
      */
     private Mono<Void> checkEmailUnique(String email) {
+    	log.info("Validate Email");
         if (!StringUtils.hasText(email)) {
             return Mono.empty(); // nothing to validate
         }
+        
+        //return Mono.empty();
 
         return ownerRepository.existsByEmail(email)
             .filter(Boolean::booleanValue)
@@ -101,6 +103,7 @@ public class OwnerRegistrationValidator {
                 Mono.error(new BadRequestException("Email already registered."))
             )
             .then(); // convert Mono<Boolean> to Mono<Void>
+            
     }
 
     /**
