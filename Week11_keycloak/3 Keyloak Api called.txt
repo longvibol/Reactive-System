@@ -1,0 +1,221 @@
+1- Create user : endpoint 
+
+POST /admin/realms/{realm}/users
+
+link  resource : https://www.keycloak.org/docs-api/latest/rest-api/index.html
+==> 
+
+http://localhost:9090/admin/realms/room-system/users
+
+2- Request body
+
+យើងមើល API specification in keyloak for request body to create user in keyload 
+
+Example from chatgpt : 
+
+{
+  "username": "john_doe",
+  "enabled": true,
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john@example.com",
+  "emailVerified": true,
+  "credentials": [
+    {
+      "type": "password",
+      "value": "123456",
+      "temporary": false
+    }
+  ]
+}
+
+
+==> what we will put in the request body 
+
+
+{
+  "username": "john_doe",
+  "enabled": true,
+  "firstName": "Chea",
+  "lastName": "Dalin",
+  "email": "dalin@gmail.com",
+  "emailVerified": true,
+  "requiredActions": []
+}
+
+
+ពេលដែលយើង send ចឹងទៅវានឹងត្រូវ block ដោយសារតែយើងមិនបានដាក់ Access token to request from Keyloak ចឹងយើងត្រូវការ login to keyloak via 
+
+token. where we can get the token 
+
+- it is from the client realm room-owener ដែលយើងបានបង្កើតនឹង 
+
+=================================
+
+
+- client id : owner-service
+- client Secret : 3kCdEQdFgmbU38mI0hmozFz8PWs2Tr2W
+
+
+=================================
+
+1- Create post method to get the Admin token
+
+- end point post: http://localhost:9090/realms/room-system/protocol/openid-connect/token
+
+- Header : វាជា map ចឹងវាត្រូវមាន  key and value 
+
+
+Content-Type : application/x-www-form-urlencoded
+
+
+==> then go to body : យើងត្រូវបញ្ចូល grant-type 
+
+- grant_type : client_credentials
+
+- client_id : owner-service
+
+- client_secret : 3kCdEQdFgmbU38mI0hmozFz8PWs2Tr2W
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

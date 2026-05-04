@@ -1,0 +1,117 @@
+1- Access token with grand-type
+
+- grant_type : client_credentials
+
+Then we get the token : 
+
+"access_token": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJiN2gtTkwyd2JmUERsUUJQQW5fcktkY0pDU2FCN3NIMUQ3eWlRNHBOMlZBIn0.eyJleHAiOjE3Nzc5MTE3NTUsImlhdCI6MTc3Nzg3NTc1NSwianRpIjoiMjNlMzA0NjctZTcyZC00N2FhLWE5MjgtNGFmOGM1MDlmMTA3IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo5MDkwL3JlYWxtcy9yb29tLXN5c3RlbSIsImF1ZCI6WyJyZWFsbS1tYW5hZ2VtZW50IiwiYWNjb3VudCJdLCJzdWIiOiIyODllNzBkYi03ZDk2LTRlMmQtODBmMS1iNTU1Y2M5ODYxMGYiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvd25lci1zZXJ2aWNlIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyIvKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJkZWZhdWx0LXJvbGVzLXJvb20tc3lzdGVtIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJyZWFsbS1tYW5hZ2VtZW50Ijp7InJvbGVzIjpbIm1hbmFnZS11c2VycyIsInZpZXctdXNlcnMiLCJxdWVyeS1ncm91cHMiLCJxdWVyeS11c2VycyJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJwcm9maWxlIGVtYWlsIiwiY2xpZW50SG9zdCI6IjE3Mi4yMS4wLjEiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6InNlcnZpY2UtYWNjb3VudC1vd25lci1zZXJ2aWNlIiwiY2xpZW50QWRkcmVzcyI6IjE3Mi4yMS4wLjEiLCJjbGllbnRfaWQiOiJvd25lci1zZXJ2aWNlIn0.GGem8j3HnyFXooHOVTlZgcHrqvVdBkw94kVciePg-ke1ho04ELgWq3RbA0sIhqwyrur7GFN7IX_h1a4cNTc5QRK77Ap4egvUy6KGT8cY0XXAc5As49PmCseBaA45JD-gMIPk_HRigghqLmrP_fo63rEll61eTPKJu29C8IHxQrZpW1nquC1aJPBJND_80-V1r8tlBO5Y_k0ZY3XK5PKZ-daYeBL8n0ADn6AV_3ds8bF3I_8bMFG2POKhmUwZhlyvwKbV3e_8eMZ5xtiE2Nkoph6KIrmd3hkwgy6dHt6QaDaG_QF3VtQEUH7ShxqB74JWV9JVVOmJG63oFJyPio3VbA",
+
+
+==> this is the access token to get : Access Keyloak API to create user (token for the Admin client)
+
+
+ដើម្បីធ្វើការ Login to the owner-server to create Room or view room យើងធ្វើការបង្កើត Client មួយទៀតដើម្បីធ្វើការ នឹងបាន
+
+==> token ដែលយើងបង្កើតនេះវា គិតទៅតាម ការ log 
+
+Client user : user-login
+
+Client Secret : D6TnoKpc0XZHZcT7aiialW9WYyXMiTCU
+
+អ្វីដែលត្រូវធ្វើការផ្លាស់ប្តូរ 
+
+
+grant_type : password
+
+client_id : user-login
+
+client_secret : D6TnoKpc0XZHZcT7aiialW9WYyXMiTCU
+
+username : 85512345678
+password : 123
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

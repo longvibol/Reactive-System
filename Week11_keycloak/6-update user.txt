@@ -1,0 +1,76 @@
+1- End point 
+
+PUT "http://localhost:8080/admin/realms/myrealm/users/{user-id}"
+
+Request body :
+
+{
+  "username": "john_doe",
+  "firstName": "John",
+  "lastName": "Updated",
+  "email": "john_updated@example.com",
+  "enabled": true,
+  "emailVerified": true
+}
+
+
+==> what in our system :
+
+
+http://localhost:9090/admin/realms/room-system/users/b1586f54-ac64-479e-b1f9-3a9839b2d1a9
+
+
+request body :
+
+{
+  "firstName": "Chea update",
+  "lastName": "Dalin update"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
