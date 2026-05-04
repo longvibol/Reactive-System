@@ -1,0 +1,78 @@
+1. start keyloak in docker
+
+>> docker compose -f keycloak.yml up -d
+
+2- check docker 
+
+>> docker ps 
+
+3- Create realm : it is like the environment 
+
+- system មួយយើងអាចប្រើប្រាស់ realm មួយទៅ
+
+4- Create client (ដើម្បីធ្វើការ control to the user client)
+
+client របស់យើងជា system មួយណា : ownerservice
+
+យើងត្រូវគិតថា មិនមានអ្នកណាដែលទៅ Create client មួយៗនោះជា ដើម្បីធ្វើការប្រើប្រាស់ login នេះ ចឹងយើងបង្កើត client មួយហើយ we call the API from keycloak to authenticate 
+
+
+5- chose only Serice accounts roles
+
+
+- client id : owner-service
+- client Secret : 3kCdEQdFgmbU38mI0hmozFz8PWs2Tr2W
+
+
+6- permission 
+
+Assign roles to owner-service
+
+- search "users" : manage-users (create, delted, update, add)
+
+6- end poit api in the realm setting 
+
+http://localhost:9090/realms/room-system/protocol/openid-connect/token
+
+
+7- create user from our system 
+
+- we defficult to create one by one from keyloak to create each user and it is not the good practice. របស់ដែលយើងធ្វើការបង្កើតម្តង់មួយៗ 
+ចឹងវាអាចខុស
+
+==> ចឹងយើងត្រូវបង្កើត User from our system ហើយបន្ទាប់ពីបង្កើតហើយ យើងបញ្ចូន Data to Keyload server to save user 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
