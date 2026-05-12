@@ -21,6 +21,26 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: pgadmin_ownerservice
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+    ports:
+      - "5050:80"
+    networks:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      ownerservice-postgres:
+        condition: service_healthy
+      keycloak-postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   keycloak-postgres:
     image: postgres:16-alpine
     container_name: keycloak-postgres
@@ -75,4 +95,5 @@ networks:
 
 volumes:
   ownerservice_pg_data:
+  pgadmin_data:
   keycloak_pg_data:

@@ -1,0 +1,112 @@
+1- Create admin service 
+
+ដើម្បីធ្វើការ Call កើតយើងត្រូវមាន 
+
+1- URL 
+2- Method 
+3- body 
+
+បន្ទាប់មកយើងធ្វើការបកប្រែ
+
+1- ដើម្បីធ្វើការ ភ្ជាប់ទៅ Api របស់គេយើងត្រូវការ Webclient 
+
+1- Create interface : KeycloakAdminClient
+
+package com.piseth.java.school.ownerservice.service.keycloak;
+
+import reactor.core.publisher.Mono;
+
+public interface KeycloakAdminClient {
+
+    Mono<String> getAdminToken();
+
+
+}
+
+2- KeycloakAdminClientImpl implements KeycloakAdminClient
+
+@Slf4j
+@Service
+@RequiredArgsConstructor
+public class KeycloakAdminClientImpl implements KeycloakAdminClient {
+	
+	// style contrance
+	private static final String GRANT_TYPE_CLIENT_CREDENTIALS = "client_credentials";
+	private static final String PASSWORD_CREDENTIAL_TYPE = "password";
+	
+	private final WebClient keycloakWebClient;
+    private final KeycloakProperties properties;
+
+	@Override
+	public Mono<String> getAdminToken() {
+		return keycloakWebClient.post()
+                .uri("/realms/{realm}/protocol/openid-connect/token", properties.realm())
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .body(BodyInserters.fromFormData("client_id", properties.admin().clientId())
+                        .with("client_secret", properties.admin().clientSecret())
+                        .with("grant_type", GRANT_TYPE_CLIENT_CREDENTIALS))
+                .retrieve()
+                .bodyToMono(KeycloakTokenResponse.class)
+                .map(KeycloakTokenResponse::accessToken);
+	}
+
+}
+
+
+- Explain 
+
+1-1 Frist we need : WebClient 
+
+keycloakWebClient.post()
+                .uri("/realms/{realm}/protocol/openid-connect/token", properties.realm())
+
+- keycloakWebClient យើងប្រើ Method Post យើងដាក់មក ហើយយើងដាក់ URI វា
+
+- {realm} គឺយើងធ្វើ Binding វា ទៅនឹង properties.realm() ដែលយើងអាចពិនិត្យមើលទៅ វាជា​  realm: ${KEYCLOAK_REALM:room-system}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
