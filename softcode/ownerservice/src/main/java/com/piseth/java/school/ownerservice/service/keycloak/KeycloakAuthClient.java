@@ -1,4 +1,4 @@
-package com.piseth.java.school.ownerservice.service.keycloak.dto;
+package com.piseth.java.school.ownerservice.service.keycloak;
 
 import com.piseth.java.school.ownerservice.dto.LoginResponse;
 

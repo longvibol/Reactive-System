@@ -6,22 +6,21 @@ import java.util.UUID;
 import com.piseth.java.school.ownerservice.domain.enums.OwnerStatus;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Value;
 
 @Builder
-//@Value or @Data
+//@Value (Immutable) vs @Data (Mutable)
 @Getter
 public class OwnerResponse {
 
-	UUID id;
-	String email;
-	String phone;
-	OwnerStatus status;
-	Instant emailVerifiedAt;
-	Instant phoneVerifiedAt;
-	Instant createdAt;
-	Instant updatedAt;
+    UUID id;
+    String email;
+    String phone;
+    OwnerStatus status;
+    Instant createdAt;
+    Instant updatedAt;
 }
 
 // Builder Pattern

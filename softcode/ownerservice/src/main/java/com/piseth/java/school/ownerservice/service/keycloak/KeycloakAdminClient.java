@@ -10,6 +10,5 @@ public interface KeycloakAdminClient {
 
     Mono<String> createUser(KeycloakCreateUserCommand command);
 
-//    Mono<Void> resetPassword(String keycloakUserId, String password);
-
+    Mono<Void> resetPassword(String keycloakUserId, String password);
 }
