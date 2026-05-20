@@ -1,0 +1,765 @@
+{
+  "info": {
+    "_postman_id": "8b94b52d-6fbb-4b39-86d8-4ef704e82915",
+    "name": "User Service - Registration Auth Flow Local",
+    "description": "Postman collection for testing the rebuilt user-service registration, resume, login, and forgot PIN flow.\n\nImportant: OTP is normally printed in application logs by the sample implementation. Copy the OTP from logs and set collection variable `otpCode` before calling OTP verification/reset APIs.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3813273"
+  },
+  "item": [
+    {
+      "name": "01 - Registration Flow",
+      "item": [
+        {
+          "name": "01 Register Phone",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201 or 200\", function () { pm.expect([200,201]).to.include(pm.response.code); });",
+                  "const json = pm.response.json();",
+                  "if (json.userAccountId) { pm.collectionVariables.set(\"userAccountId\", json.userAccountId); }",
+                  "if (json.registrationStatus) { pm.collectionVariables.set(\"registrationStatus\", json.registrationStatus); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/phone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "phone"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02 Verify OTP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.userAccountId) { pm.collectionVariables.set(\"userAccountId\", json.userAccountId); }",
+                  "if (json.registrationStatus) { pm.collectionVariables.set(\"registrationStatus\", json.registrationStatus); }",
+                  "if (json.nextStep) { pm.collectionVariables.set(\"nextStep\", json.nextStep); }"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"otpCode\": \"730858\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/otp/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "otp",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "03 Complete Customer Profile",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Piseth\",\n  \"lastName\" : \"Ing\",\n  \"dateOfBirth\": \"1995-01-01\",\n  \"gender\": \"MALE\",\n  \"email\": \"piseth@example.com\",\n  \"nid\": \"123456789\",\n  \"photoObjectKey\": \"customers/profile/demo-photo.png\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/{{userAccountId}}/customer-profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "{{userAccountId}}",
+                "customer-profile"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04 Set PIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.registrationStatus) { pm.collectionVariables.set(\"registrationStatus\", json.registrationStatus); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pin\": \"{{pin}}\",\n  \"confirmPin\": \"{{pin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/{{userAccountId}}/pin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "{{userAccountId}}",
+                "pin"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - Resume Registration",
+      "item": [
+        {
+          "name": "Check Registration Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.userAccountId) { pm.collectionVariables.set(\"userAccountId\", json.userAccountId); }",
+                  "if (json.registrationStatus) { pm.collectionVariables.set(\"registrationStatus\", json.registrationStatus); }",
+                  "if (json.nextStep) { pm.collectionVariables.set(\"nextStep\", json.nextStep); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Same Phone Again - Incomplete User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 201 or 200\", function () { pm.expect([200,201]).to.include(pm.response.code); });",
+                  "const json = pm.response.json();",
+                  "if (json.userAccountId) { pm.collectionVariables.set(\"userAccountId\", json.userAccountId); }",
+                  "if (json.registrationStatus) { pm.collectionVariables.set(\"registrationStatus\", json.registrationStatus); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/phone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "phone"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Login",
+      "item": [
+        {
+          "name": "Login With Phone And PIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.accessToken) { pm.collectionVariables.set(\"accessToken\", json.accessToken); }",
+                  "if (json.refreshToken) { pm.collectionVariables.set(\"refreshToken\", json.refreshToken); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"pin\": \"{{pin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - Forgot PIN",
+      "item": [
+        {
+          "name": "Request Forgot PIN OTP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forgot-pin/otp",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "forgot-pin",
+                "otp"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Reset PIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"otpCode\": \"{{otpCode}}\",\n  \"pin\": \"{{newPin}}\",\n  \"confirmPin\": \"{{newPin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/forgot-pin/reset",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "forgot-pin",
+                "reset"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login With New PIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status is 200\", function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json.accessToken) { pm.collectionVariables.set(\"accessToken\", json.accessToken); }",
+                  "if (json.refreshToken) { pm.collectionVariables.set(\"refreshToken\", json.refreshToken); }"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"pin\": \"{{newPin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - Negative Test Cases",
+      "item": [
+        {
+          "name": "Login With Wrong PIN",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Should fail\", function () { pm.expect(pm.response.code).to.be.oneOf([400,401,403,404]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"pin\": \"9999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP With Invalid Code",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Should fail\", function () { pm.expect(pm.response.code).to.be.oneOf([400,401,404]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\",\n  \"otpCode\": \"000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/otp/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "otp",
+                "verify"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Register Already Completed User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Completed user should fail or return business error\", function () { pm.expect(pm.response.code).to.be.oneOf([400,409]); });"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"countryCode\": \"{{countryCode}}\",\n  \"phoneNumber\": \"{{phoneNumber}}\",\n  \"userType\": \"{{userType}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/registrations/phone",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "registrations",
+                "phone"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "countryCode",
+      "value": "+855",
+      "type": "string"
+    },
+    {
+      "key": "phoneNumber",
+      "value": "12345678",
+      "type": "string"
+    },
+    {
+      "key": "userType",
+      "value": "CUSTOMER",
+      "type": "string"
+    },
+    {
+      "key": "otpCode",
+      "value": "123456",
+      "type": "string"
+    },
+    {
+      "key": "pin",
+      "value": "1234",
+      "type": "string"
+    },
+    {
+      "key": "newPin",
+      "value": "1111",
+      "type": "string"
+    },
+    {
+      "key": "userAccountId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "accessToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refreshToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "registrationStatus",
+      "value": ""
+    },
+    {
+      "key": "nextStep",
+      "value": ""
+    }
+  ]
+}

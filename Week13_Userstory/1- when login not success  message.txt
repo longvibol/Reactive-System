@@ -1,0 +1,25 @@
+1- when login not success " message the login username and log is invalide & and change the status to 400 : bad request
+2- 
+
+{
+  "countryCode": "{{countryCode}}",
+  "phoneNumber": "{{phoneNumber}}",
+  "userType": "{{userType}}",
+  "otpCode": "{{otpCode}}",
+  "pin": "{{newPin}}",
+  "confirmPin": "{{newPin}}"
+}
+
+
+- We do not give : otpCode and new pin or confirmPin at the same time te
+
+==> When reset passport : need to confirm otpfirst 
+
+"countryCode": "{{countryCode}}",
+"phoneNumber": "{{phoneNumber}}",
+"userType": "{{userType}}",
+
+1- need to confirm otpCode first : need to be much with system first 
+
+2- then 
+resetToken
