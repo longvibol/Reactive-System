@@ -1,0 +1,125 @@
+- Service : RegistrationService have many service : សរុបទៅវាទទួលបន្ទុកច្រើនពេក 
+
+ Mono<RegisterPhoneResponse> registerPhone(RegisterPhoneRequest request);
+
+ Mono<RegistrationStatusResponse> verifyOtp(VerifyOtpRequest request);
+
+ Mono<CustomerProfileResponse> completeCustomerProfile(UUID userAccountId, CustomerProfileRequest request);
+
+ Mono<UserAccountResponse> setPin(UUID userAccountId, SetPinRequest request);
+
+ Mono<RegistrationStatusResponse> checkRegistration(RegisterPhoneRequest request);
+
+វាច្រើនពេក យើងគួរតែធ្វើការបែងចែកអោយទៅតាម ផ្នែកវានីមួយៗ delicate to each response : 
+
+1- Register phone : វាគួរតែមានអ្នកចាំធ្វើការងារនឹងមួយទៅ 
+
+==> បែងចែកទៅតាម usecase នីមួយៗ
+
+យើងគួរតែធ្វើការ update ទៅកាន់ Pattern ==> Façade Pattern 
+
+           Client
+              |
+              |
+      ComputerFacade
+      /      |       \
+    CPU   Memory   HardDrive
+
+The client does not need to communicate directly with CPU, Memory, or HardDrive.
+
+==> The facade hides all the complicated work behind one simple method.
+
+ការប្រើប្រាស់ Pattern វាជា Proving solution 
+
+---------------------------------------------------
+
+
+យើងយក Mono<RegisterPhoneResponse> registerPhone(RegisterPhoneRequest request);​ មកប្រើប្រាស់
+
+យើងមើល implementation របស់វា 
+
+public Mono<RegisterPhoneResponse> registerPhone(RegisterPhoneRequest request) {}
+
+- នៅក្នុង service នឹងមាន service ច្រើនវាចូលគ្នា ចឹងសម្រាប់ Façade Pattern យើងប្រមូល service ទាំងអស់នឹងដាក់ចូលគ្នា ដែលមានដូចជា៖
+
++ NormalizedPhone phone = phoneNumberService.normalize
++ findByPhoneAndUserType
++ createRegistration
+
+
+ចឹងយើងធ្វើការ Group វាធ្វើ functionality ដាក់មួយដុំ 
+
+RegistrationSessionService
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
