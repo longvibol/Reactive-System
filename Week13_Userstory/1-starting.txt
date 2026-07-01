@@ -1,0 +1,58 @@
+1- Create network for docker compose 
+
+>> docker network create pisethjavaschool-dev-net
+
+
+2- run docker compose 
+
+>> docker compose -f docker-compose.yml up -d
+
+-----------------
+
+
+We create two service:
+
+1- staff_profile : our staff who register បុគ្គលិកអ្នកប្រើប្រាស់
+
+2- customer_profile : ម្ចាស់ផ្ទះជួលម្តាស់ផ្ទះសំណាក់ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

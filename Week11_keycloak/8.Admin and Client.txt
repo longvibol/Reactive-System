@@ -1,0 +1,82 @@
+keycloak:
+  base-url: http://localhost:9090     # where Keycloak lives
+  realm: room-system                  # your Keycloak project
+
+  admin:
+    client-id: user-service           # backend manager
+    client-secret: secret             # backend manager password
+
+  client:
+    client-id: user-login             # login door
+    client-secret: secret             # login door password
+
+
+-----------------------------
+
+
+| Part     | Meaning           | Used for                          |
+| -------- | ----------------- | --------------------------------- |
+| `admin`  | Backend has power | Create/update/delete users        |
+| `client` | User login        | Username/password login and token |
+
+
+
+----------------------------------
+
+admin គឺយើងចង់បាន token 
+client គឺត្រូវការ token ពី​ admin បានអាចធ្វើការ login ចូល
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

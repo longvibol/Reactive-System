@@ -1,0 +1,26 @@
+{
+  "firstName": "Dany",
+  "lastName" : "Long",
+  "dateOfBirth": "1995-01-01",
+  "gender": "FEMALE",
+  "email": "vibol@gmail.com.com",
+  "nid": "123456789",
+  "photoObjectKey": "customers/profile/demo-photo.png"
+}
+
+
+---------------------------------------
+
+យើងអត់បានធ្វើការ ផ្ញើរ Email ទៅទេ
+
+{
+  "firstName": "Dany",
+  "lastName" : "Long",
+  "dateOfBirth": "1995-01-01",
+  "gender": "FEMALE",
+  "nid": "123456789",
+  "photoObjectKey": "customers/profile/demo-photo.png"
+}
+
+ដោយសារតែ in the keyloack email គឺវាចាំបាច់ តែយើងអត់បានដាក់
+

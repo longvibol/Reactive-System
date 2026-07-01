@@ -1,0 +1,123 @@
+>> docker compose -f redis.yml up -d
+
+- In memory database : Redis 
+
+==> We will do the registration token: There are many ways we can do it
+
+- jwt
+- use own algorithm (decode) 32 char: dasdferwer424
+- redis (is the in memory database) 
+
+-----------------------------------------------------------------------
+
+
+1- Create Redis server 
+
+2- Add dependency : need reactive dependacny 
+
+
+-------------------------------------------------
+
+Step By Step to do it:
+
+1- Create Redis server with docker file
+
+services:
+  user-redis:
+    image: redis:7.4-alpine
+    container_name: user-redis
+    ports:
+      - "6379:6379"
+    networks:
+      - pisethjavaschool-dev-net
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - userservice_redis_data:/data
+    restart: unless-stopped
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+    networks:
+      - pisethjavaschool-dev-net
+    depends_on:
+      - user-redis
+
+volumes:
+  userservice_redis_data:
+
+networks:
+  pisethjavaschool-dev-net:
+    external: true
+
+
+2- Dependacny 
+
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis-reactive</artifactId>
+		</dependency>
+
+
+------------------------------
+
++ Deserialize : From (Storage/Network format (JSON, Bytes) To Live Memory Object : So the program can read/modify it.
+
++ Reserialize : From (Live Memory Object) To Storage/Network format (JSON, Bytes) : So the program can save/send it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

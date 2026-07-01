@@ -8,3 +8,6 @@ Clean skip test
 Run 
 
 >> mvn spring-boot:run
+
+
+YAML descriptor for Enonic XP Applications
