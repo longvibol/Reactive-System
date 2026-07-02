@@ -1,0 +1,13 @@
+- Put refresh token to set pin
+
+
+1- Add reset pin 
+
+reset-pin-session:
+  expire-minutes: ${RESET_PIN_SESSION_EXPIRE_MINUTES:10} 
+
+
+
+
+
+

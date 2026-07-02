@@ -1,0 +1,101 @@
+- User registeration token in set Pin 
+
+- Resend OTP (if the user verify we no need to send the otp) ក្នុងករណីដែល user យើងបានធ្វើការ Verify ហើយតែគាត់ដើរទៅណាបាត់ 
+ហើយ token យើងនឹងវា expire 
+
+ចឹងយើងត្រូវមាន API មួយ call ដើម្បីអោយអោយគេធ្វើការ ផ្ញើរ OTP ថ្មី
+
+/*
+         * Reason:
+         * Resend OTP is a separate use case from register phone.
+         * Register phone may create a new account.
+         * Resend OTP must only work for an existing registration.
+         */
+
+
+
+- in the process Registraion after we get the OTP but our account not verfify we can as the system to resend the OTP (ចាំអោយ status in the phone register ចាំអោយវាផ្ញើរទៅ 
+
+==> in case we verify the opt and the status is verify==> we can reqest to get the register token again 
+
+បើយើងអោយគេធ្វើការ ផ្ញើរតាម OTP វាផ្ញើរសារតាម Message វាអស់លុយ តែសម្រាប់ request token យើងផ្ញើរទៅអោយ ទូរស័ព្ធតាម app របស់យើងនឹង
+
+-------------------------------------------------
+
+
+Noted :
+
+public Mono<Void> validateCanRegisterOrResume(UserAccount account) {
+        if (account.getRegistrationStatus() == RegistrationStatus.PIN_SET) {
+            return Mono.error(new UserAlreadyRegisteredException());
+        }
+
+        return Mono.empty();
+    }
+
+យើងចង់ធ្វើការកែ ទៅលើ method មួយយើងគួរតែមើលវាសិនថា តើ method នឹងប្រើប្រាស់នៅកន្លែងណាខ្លះ 
+
+validateCanRegisterOrResume: highlight on this method then use Ctrl + Shift + G to see the method using 
+
+------------------
+
+resum registration :
+
+
+ResumeRegistrationFacadeImpl : គោលបំណង់យើងចង់ return registration token ory user 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
